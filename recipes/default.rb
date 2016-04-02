@@ -1,22 +1,38 @@
 #
-# Cookbook Name:: sentry
-# Recipe:: default
+# Cookbook: sentry
+# License: Apache 2.0
 #
-# Copyright 2013, Openhood S.E.N.C.
-#
-# Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
-# You may obtain a copy of the License at
-#
-#     http://www.apache.org/licenses/LICENSE-2.0
-#
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
+# Copyright 2013-2016, Openhood S.E.N.C.
+# Copyright 2016, Bloomberg Finance L.P.
 #
 
-include_recipe "sentry::_install"
-include_recipe "sentry::_configure"
-include_recipe "sentry::_service"
+group node['sentry']['service_group'] do
+  system true
+end
+
+user node['sentry']['service_user'] do
+  system true
+  home node['sentry']['service_home']
+  gid node['sentry']['service_group']
+end
+
+sentry_installation node['sentry']['install']['version'] do
+  directory node['sentry']['service_home']
+  user node['sentry']['service_user']
+  group node['sentry']['service_group']
+end
+
+sentry_config node['sentry']['service_name'] do |r|
+  path File.join(node['sentry']['service_home'], 'etc', 'config.py')
+  owner node['sentry']['service_user']
+  group node['sentry']['service_group']
+
+  node['sentry']['config'].each_pair { |k, v| r.send(k, v) }
+  notifies :restart, "poise_service[#{name}]", :delayed
+end
+
+poise_service node['sentry']['service_name'] do
+  command 'bin/sentry'
+  user node['sentry']['service_user']
+  directory node['sentry']['service_home']
+end

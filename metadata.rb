@@ -1,13 +1,15 @@
-name             "sentry"
-maintainer       "Openhood S.E.N.C"
-maintainer_email "jonathan@openhood.com"
-license          "Apache 2.0"
-description      "Installs/Configures Sentry realtime error logging and aggregation platform"
-long_description IO.read(File.join(File.dirname(__FILE__), "README.md"))
-version          "0.2.2"
+name 'sentry'
+maintainer 'Openhood S.E.N.C'
+maintainer_email 'jonathan@openhood.com'
+license 'Apache 2.0'
+description 'Installs/Configures Sentry - A realtime error logging and aggregation platform.'
+long_description 'Installs/Configures Sentry - A realtime error logging and aggregation platform.'
+version '1.0.0'
 
-supports "ubuntu"
+supports 'ubuntu', '>= 12.04'
+supports 'redhat', '>= 6.7'
+supports 'centos', '>= 6.7'
 
-depends "python"
-depends "runit", ">= 1.1.6"
-suggests "redisio"
+depends 'poise'
+depends 'poise-service'
+depends 'poise-python'
