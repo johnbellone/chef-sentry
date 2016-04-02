@@ -18,7 +18,7 @@ module SentryCookbook
       provides(:sentry_installation)
 
       attribute(:version, kind_of: String, name_attribute: true)
-      attribute(:owner, kind_of: String, default: 'sentry')
+      attribute(:user, kind_of: String, default: 'sentry')
       attribute(:group, kind_of: String, default: 'sentry')
       attribute(:directory, kind_of: String, default: '/srv/sentry')
       attribute(:pip_dependencies, kind_of: Hash, default: lazy { default_pip_dependencies })
@@ -33,7 +33,7 @@ module SentryCookbook
         directory ::File.join(new_resource.directory, 'data') do
           recursive true
           owner new_resource.user
-          owner new_resource.group
+          group new_resource.group
         end
 
         if node.platform_family?('debian')
@@ -47,7 +47,7 @@ module SentryCookbook
         include_recipe 'poise-python::default'
 
         python_virtualenv new_resource.directory do
-          owner new_resource.user
+          user new_resource.user
           group new_resource.group
         end
 
