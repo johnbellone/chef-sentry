@@ -30,12 +30,18 @@ module SentryCookbook
       end
 
       action(:create) do
+        directory ::File.join(new_resource.directory, 'data') do
+          recursive true
+          owner new_resource.user
+          owner new_resource.group
+        end
+
         if node.platform_family?('debian')
-          package %w{libxml2-dev libxslt1-dev libffi-dev}
+          package %w{libxml2-dev libxslt1-dev libffi-dev libyaml-dev libpq-dev libz-dev libssl-dev}
         end
 
         if node.platform_family?('rhel')
-          package %w{libxml2-devel libxslt1-devel libffi-devel}
+          package %w{libxml2-devel libxslt1-devel libffi-devel libyaml-devel libpq-devel libz-devel libssl-devel}
         end
 
         include_recipe 'poise-python::default'

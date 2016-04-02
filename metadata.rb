@@ -10,6 +10,8 @@ supports 'ubuntu', '>= 12.04'
 supports 'redhat', '>= 6.7'
 supports 'centos', '>= 6.7'
 
+depends 'cron'
+depends 'httpd'
 depends 'poise'
 depends 'poise-service'
 depends 'poise-python'

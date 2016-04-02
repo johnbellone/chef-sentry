@@ -36,3 +36,10 @@ poise_service node['sentry']['service_name'] do
   user node['sentry']['service_user']
   directory node['sentry']['service_home']
 end
+
+cron_d 'sentry' do
+  command "#{node['sentry']['service_home']}/bin/sentry cleanup --days=30"
+  predefined_value '@midnight'
+end
+
+httpd_service 'default'

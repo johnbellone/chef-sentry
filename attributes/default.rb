@@ -1,42 +1,24 @@
 #
-# Cookbook Name:: sentry
-# Attribute:: default
+# Cookbook: sentry
+# License: Apache 2.0
 #
-# Copyright 2013, Openhood S.E.N.C.
-#
-# Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
-# You may obtain a copy of the License at
-#
-#     http://www.apache.org/licenses/LICENSE-2.0
-#
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
+# Copyright 2013-2016, Openhood S.E.N.C.
+# Copyright 2016, Bloomberg Finance L.P.
 #
 
-include_attribute "python::default"
-default["sentry"]["version"] = "7.7.1"
-default["sentry"]["user"] = "sentry"
-default["sentry"]["group"] = "sentry"
-default["sentry"]["pipname"] = "sentry"
-default["sentry"]["database"]["pipdeps"] = []
-default["sentry"]["plugins"] = [
-  ["django-secure", "1.0.1"],
-  ["django-bcrypt", "0.9.2"],
-  ["django-sendmail-backend", "0.1.2"],
-]
-default["sentry"]["dependency"]["packages"] = [
-  "libxml2-dev",
-  "libxslt1-dev",
-  "libffi-dev",
-]
-default["sentry"]["install_dir"] = "/opt/sentry"
-default["sentry"]["filestore_dir"] = "/opt/sentry/data"
-default["sentry"]["config_dir"] = "#{node["sentry"]["install_dir"]}/etc"
-default["sentry"]["config_file_path"] = "#{node["sentry"]["config_dir"]}/config.py"
+default['sentry']['service_name'] = 'sentry'
+default['sentry']['service_user'] = 'sentry'
+default['sentry']['service_group'] = 'sentry'
+default['sentry']['service_home'] = '/srv/sentry'
+
+default['sentry']['install']['version'] = '7.7.1'
+
+default['sentry']['config']['options'] = {
+  'allow_registration' => false,
+  'public' => false,
+  'beacon' => false,
+  'secure_proxy_ssl_header' => false,
+}
 
 default["sentry"]["env_d_path"] = "/etc/sentry.d"
 default["sentry"]["env_path"] = "#{node["sentry"]["env_d_path"]}/env"
